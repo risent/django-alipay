@@ -10,9 +10,11 @@ from hashlib import md5
 from .config import settings
 from .utils import params_filter, build_mysign
 
-# 网关地址
+# 即时到帐网关地址
 _GATEWAY = 'https://mapi.alipay.com/gateway.do?'
+# 手机网站网关地址
 WAP_PAY_GW = 'http://wappaygw.alipay.com/service/rest.htm?'
+# 通知校验网关地址
 HTTPS_VERIFY_URL = "https://mapi.alipay.com/gateway.do?service=notify_verify&";
 
 # 即时到账交易接口
@@ -115,8 +117,8 @@ def send_goods_confirm_by_platform (tn):
 
 def notify_verify(post):
     # 初级验证--签名
-    _,prestr = params_filter(post)
-    mysign = build_mysign(prestr, settings.ALIPAY_KEY, settings.ALIPAY_SIGN_TYPE)
+    prams = params_filter(post)
+    mysign = build_mysign(params, settings.ALIPAY_KEY)
     if mysign != post.get('sign'):
         return False
     
